@@ -8,9 +8,8 @@ async function main() {
   console.log("Connection Established");
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-}
 
-  //making schema
+    //making schema
   const Schema=mongoose.Schema
    //blueprint of our movieSchema
    /*
@@ -78,13 +77,39 @@ async function main() {
 
        console.log("IT WORKED")
        console.log(data)
-   })
+   }) 
 
-   //finding through mongoose
-   //exec handles error for us
-   await MyModel.find({ year : {$gte : 2020} }).exec()
-   .then()
-   
+//finding through mongoose
+//exec handles error for us
+   await Action.find({ year : {$gte : 2020} }).exec()
+   .then(data=>console.log(data))
+
+//updating with mongoose
 
 
-//node -i -e "$(< index.js)"
+//doesnt return the actual documents updated but only number of updates which are of no  use
+const  res= await Action.updateOne({year:{$gt:2000}},{title:"new"})
+const  res2= await Action.updateOne({year:{$gt:2000}},{title:"new"})
+
+//findoneandupdate and find by id and update -returns actual updated doc
+
+const query = { name: 'borne' };
+//Model.findOneAndUpdate(query, { name: 'jason bourne' }, options)
+//options can be multiple things
+//runValidators validate the update operation against the model's schema
+//new enables the return of the modified document rather than the original
+Action.findOneAndUpdate(query,{year:{$gte:2013}},{runValidators:true,new:true})
+
+
+//A.findByIdAndUpdate(id, update, options)  // returns Query
+
+//deleting with mongoose
+await Action.deleteOne({ name: 'Eddard Stark' }); // returns {deletedCount: 1}
+await Action.deleteMany({ name: /Stark/, age: { $gte: 18 } }); // returns {deletedCount: x} where x is the number of documents deleted.
+
+//similarily  findOneAndDelete() and findByIdAndDelete() command Finds a matching document, removes it, and returns the found document (if any).
+}
+
+
+
+
